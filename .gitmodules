@@ -1,0 +1,4 @@
+[submodule "static/jscoq"]
+	path = static/jscoq
+	url = git@github.com:ejgallego/jscoq.git
+	branch = collacoq
