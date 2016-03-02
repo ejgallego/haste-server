@@ -4,15 +4,6 @@ var haste_document = function() {
   this.locked = false;
 };
 
-// Escapes HTML tag characters
-haste_document.prototype.htmlEscape = function(s) {
-  return s
-    .replace(/&/g, '&amp;')
-    .replace(/>/g, '&gt;')
-    .replace(/</g, '&lt;')
-    .replace(/"/g, '&quot;');
-};
-
 // Get this document from the server and lock it here
 haste_document.prototype.load = function(key, callback, lang) {
   var _this = this;
@@ -23,28 +14,11 @@ haste_document.prototype.load = function(key, callback, lang) {
       _this.locked = true;
       _this.key = key;
       _this.data = res.data;
-/*
-      try {
-        var high;
-        if (lang === 'txt') {
-          high = { value: _this.htmlEscape(res.data) };
-        }
-        else if (lang) {
-          high = hljs.highlight(lang, res.data);
-        }
-        else {
-          high = hljs.highlightAuto(res.data);
-        }
-      } catch(err) {
-        // failed highlight, fall back on auto
-        high = hljs.highlightAuto(res.data);
-      }
-*/
+
       callback({
         value: res.data,
         key: key,
         language: 'coq',
-        lineCount: res.data.split("\n").length
       });
     },
     error: function(err) {
@@ -74,8 +48,6 @@ haste_document.prototype.save = function(data, callback) {
         value: high,
         key: res.key,
         language: 'coq',
-        // language: high.language,
-        lineCount: data.split("\n").length
       });
     },
     error: function(res) {
@@ -98,7 +70,6 @@ var haste = function(appName, options) {
   this.$editor = null;
   this.$box = $('#box');
   this.$code = $('#box code');
-  this.$linenos = $('#linenos');
   this.options = options;
   this.configureShortcuts();
   this.configureButtons();
@@ -163,7 +134,6 @@ haste.prototype.newDocument = function(hideHistory) {
   // });
   this.$editor.setValue('');
   this.$editor.focus();
-  this.removeLineNumbers();
 };
 
 // Map of common extensions
@@ -194,21 +164,6 @@ haste.prototype.lookupTypeByExtension = function(ext) {
   return haste.extensionMap[ext] || ext;
 };
 
-// Add line numbers to the document
-// For the specified number of lines
-haste.prototype.addLineNumbers = function(lineCount) {
-  var h = '';
-  for (var i = 0; i < lineCount; i++) {
-    h += (i + 1).toString() + '<br/>';
-  }
-  $('#linenos').html(h);
-};
-
-// Remove the line numbers
-haste.prototype.removeLineNumbers = function() {
-  $('#linenos').html('&gt;');
-};
-
 // Load a document and show it
 haste.prototype.loadDocument = function(key) {
   // Split the key up
@@ -225,7 +180,6 @@ haste.prototype.loadDocument = function(key) {
       _this.$editor.focus();
       // _this.$textarea.val('').hide();
       // _this.$box.show().focus();
-      // _this.addLineNumbers(ret.lineCount);
     }
     else {
       _this.newDocument();
@@ -263,7 +217,6 @@ haste.prototype.lockDocument = function() {
       // _this.$editor.setValue('');
       // _this.$textarea.val('').hide();
       // _this.$box.show().focus();
-      // _this.addLineNumbers(ret.lineCount);
     }
   });
 };
