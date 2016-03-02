@@ -68,8 +68,6 @@ var haste = function(appName, options) {
   // this.$textarea = $('textarea');
   // this.$editor = $('#code-wrapper').first();
   this.$editor = null;
-  this.$box = $('#box');
-  this.$code = $('#box code');
   this.options = options;
   this.configureShortcuts();
   this.configureButtons();
@@ -122,16 +120,15 @@ haste.prototype.configureKey = function(enable) {
 // Remove the current document (if there is one)
 // and set up for a new one
 haste.prototype.newDocument = function(hideHistory) {
-  this.$box.hide();
+
   this.doc = new haste_document();
+
   if (!hideHistory) {
     window.history.pushState(null, this.appName, '/');
   }
+
   this.setTitle();
   this.lightKey();
-  // this.$textarea.val('').show('fast', function() {
-  //   this.focus();
-  // });
   this.$editor.setValue('');
   this.$editor.focus();
 };
@@ -173,13 +170,10 @@ haste.prototype.loadDocument = function(key) {
   _this.doc = new haste_document();
   _this.doc.load(parts[0], function(ret) {
     if (ret) {
-      // _this.$code.html(ret.value);
       _this.setTitle(ret.key);
       _this.fullKey();
       _this.$editor.setValue(ret.value);
       _this.$editor.focus();
-      // _this.$textarea.val('').hide();
-      // _this.$box.show().focus();
     }
     else {
       _this.newDocument();
@@ -214,9 +208,6 @@ haste.prototype.lockDocument = function() {
       }
       window.history.pushState(null, _this.appName + '-' + ret.key, file);
       _this.fullKey();
-      // _this.$editor.setValue('');
-      // _this.$textarea.val('').hide();
-      // _this.$box.show().focus();
     }
   });
 };
