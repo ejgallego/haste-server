@@ -10,7 +10,7 @@ haste_document.prototype.load = function(key, callback, lang) {
 
   var _this = this;
 
-  $.ajax('/documents/' + key, {
+  $.ajax('documents/' + key, {
     type: 'get',
     dataType: 'json',
 
@@ -43,7 +43,7 @@ haste_document.prototype.save = function(data, callback) {
   this.data = data;
   var _this = this;
 
-  $.ajax('/documents', {
+  $.ajax('documents', {
     type: 'post',
     data: data,
     dataType: 'json',
