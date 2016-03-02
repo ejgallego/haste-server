@@ -6,8 +6,7 @@
 		<link rel="stylesheet" type="text/css" href="application.css"/>
 
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-		<!-- <script type="text/javascript" src="application.min.js"></script> -->
-		<script type="text/javascript" src="coq-app.js"></script>
+		<script type="text/javascript" src="coq-app.min.js"></script>
 		<meta name="robots" content="noindex,nofollow"/>
 
 		<script type="text/javascript">
@@ -74,6 +73,7 @@
                                 coq = cm;
                                 /* Uh ah hack! */
 				app = new haste('hastebin', { twitter: true });
+                                app.$coq    = coq;
                                 app.$editor = coq.provider.snippets[0].editor;
                                 app.$editor.setValue('');
                                 app.$editor.focus();
