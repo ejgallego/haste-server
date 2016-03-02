@@ -1,26 +1,25 @@
 <html>
-
 	<head>
-
-		<title>hastebin</title>
+		<title>collacoq</title>
 
 		<link rel="stylesheet" type="text/css" href="solarized_dark.css"/>
 		<link rel="stylesheet" type="text/css" href="application.css"/>
 
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-		<script type="text/javascript" src="highlight.min.js"></script>
-		<script type="text/javascript" src="application.min.js"></script>
-
+		<!-- <script type="text/javascript" src="application.min.js"></script> -->
+		<script type="text/javascript" src="coq-app.js"></script>
 		<meta name="robots" content="noindex,nofollow"/>
 
 		<script type="text/javascript">
 			var app = null;
+
 			// Handle pops
 			var handlePop = function(evt) {
 				var path = evt.target.location.pathname;
 				if (path === '/') { app.newDocument(true); }
 				else { app.loadDocument(path.substring(1, path.length)); }
 			};
+
 			// Set up the pop state to handle loads, skipping the first load
 			// to make chrome behave like others:
 			// http://code.google.com/p/chromium/issues/detail?id=63040
@@ -30,10 +29,6 @@
 				};
 			}, 1000);
 			// Construct app and load initial path
-			$(function() {
-				app = new haste('hastebin', { twitter: true });
-				handlePop({ target: window });
-			});
 		</script>
 
 	</head>
@@ -59,9 +54,34 @@
 			</div>
 		</div>
 
-		<div id="linenos"></div>
 		<pre id="box" style="display:none;" tabindex="0"><code></code></pre>
-		<textarea spellcheck="false" style="display:none;"></textarea>
+
+                <div id="ide-wrapper">
+                  <div id="code-wrapper">
+                  </div>
+                </div> <!-- /#ide-wrapper -->
+
+                <script src="jscoq/js/jscoq-loader.js" type="text/javascript"></script>
+
+                <script type="text/javascript">
+                 var coq;
+                 var coq_elem = document.getElementById('code-wrapper');
+
+                 loadJsCoq('./jscoq/')
+                            .then( () => new CoqManager ([coq_elem],
+                                                         { prelude: true, mock: false,
+                                                           base_path: "jscoq/",
+                                                           init_pkgs: ['init'] }))
+                            .then( cm => {
+                                coq = cm;
+                                /* Uh ah hack! */
+				app = new haste('hastebin', { twitter: true });
+                                app.$editor = coq.provider.snippets[0].editor;
+                                app.$editor.setValue('');
+                                app.$editor.focus();
+				handlePop({ target: window });
+                            });
+                </script>
 
 	</body>
 
