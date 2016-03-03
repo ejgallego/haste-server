@@ -2,11 +2,11 @@
 	<head>
 		<title>collacoq</title>
 
-		<link rel="stylesheet" type="text/css" href="collacoq/solarized_dark.css"/>
-		<link rel="stylesheet" type="text/css" href="collacoq/application.css"/>
+		<link rel="stylesheet" type="text/css" href="solarized_dark.css"/>
+		<link rel="stylesheet" type="text/css" href="application.css"/>
 
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-		<script type="text/javascript" src="collacoq/coq-app.min.js"></script>
+		<script type="text/javascript" src="coq-app.min.js"></script>
 		<meta name="robots" content="noindex,nofollow"/>
 
 		<script type="text/javascript">
@@ -16,7 +16,7 @@
 			var handlePop = function(evt) {
 				var path = evt.target.location.pathname;
 				if (path === app.basepath) { app.newDocument(true); }
-				else { app.loaddocument(path.substring(app.basepath.length, path.length)); }
+				else { app.loadDocument(path.substring(app.basepath.length, path.length)); }
 			};
 
 			// Set up the pop state to handle loads, skipping the first load
