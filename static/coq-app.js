@@ -72,6 +72,8 @@ haste_document.prototype.save = function(data, callback) {
 ///// represents the paste application
 
 var haste = function(appName, options) {
+
+  this.basepath = '/';
   this.appName = appName;
   // A codeMirror instance.
 
@@ -135,7 +137,7 @@ haste.prototype.newDocument = function(hideHistory) {
   this.doc = new haste_document();
 
   if (!hideHistory) {
-    window.history.pushState(null, this.appName, '/');
+    window.history.pushState(null, this.appName, this.basepath);
   }
 
   this.setTitle();
@@ -226,7 +228,7 @@ haste.prototype.lockDocument = function() {
 
       _this.setTitle(ret.key);
 
-      var file = '/' + ret.key;
+      var file = this.basepath + ret.key;
       if (ret.language) {
         file += '.' + _this.lookupExtensionByType(ret.language);
       }
