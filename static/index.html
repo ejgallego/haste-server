@@ -74,7 +74,7 @@
                             .then( cm => {
                                 coq = cm;
                                 /* Uh ah hack! */
-				app = new haste('hastebin', { twitter: true });
+				app = new haste('Welcome to CollaCoq, the Coq pastebin', { twitter: true });
                                 app.basepath = '/collacoq/';
                                 app.$coq    = coq;
                                 app.$editor = coq.provider.snippets[0].editor;
