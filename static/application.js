@@ -226,7 +226,9 @@ haste.prototype.loadDocument = function(key) {
 // Duplicate the current document - only if locked
 haste.prototype.duplicateDocument = function() {
   if (this.doc.locked) {
-    var currentData = this.doc.data;
+    // var currentData = this.doc.data;
+    // Put edited data in the new document.
+    var currentData = this.$textarea.val();
     this.newDocument();
     this.$textarea.val(currentData);
   }
