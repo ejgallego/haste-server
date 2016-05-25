@@ -206,9 +206,10 @@ haste.prototype.loadDocument = function(key) {
 haste.prototype.duplicateDocument = function() {
 
   if (this.doc.saved) {
+
     // Put edited data in the new document.
-    // var currentData = this.doc.data;
-    var currentData = this.$textarea.val();
+    // Was: var currentData = this.doc.data;
+    var currentData = this.$editor.getValue();
 
     this.newDocument();
 
