@@ -4,6 +4,11 @@ body {
 	margin: 0px;
 }
 
+#code-wrapper,
+.CodeMirror {
+    height: 100%;
+}
+
 /* textarea */
 
 textarea {
