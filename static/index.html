@@ -68,7 +68,8 @@
 
                  loadJsCoq(jscoq_path)
                             .then( () => new CoqManager ([coq_elem],
-                                                         { prelude: true, mock: false,
+                                                         { prelude: true,
+                                                           implicit_libs: true,
                                                            base_path: jscoq_path,
                                                            init_pkgs: ['init'] }))
                             .then( cm => {
