@@ -1,91 +1,98 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>collacoq</title>
+  <head>
+    <title>collacoq</title>
 
-		<link rel="stylesheet" type="text/css" href="solarized_dark.css"/>
-		<link rel="stylesheet" type="text/css" href="application.css"/>
+    <link rel="stylesheet" type="text/css" href="solarized_dark.css"/>
+    <link rel="stylesheet" type="text/css" href="application.css"/>
 
-		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-		<script type="text/javascript" src="coq-app.min.js"></script>
-		<meta name="robots" content="noindex,nofollow"/>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="coq-app.min.js"></script>
+    <meta name="robots" content="noindex,nofollow"/>
 
-		<script type="text/javascript">
-			var app = null;
+    <script type="text/javascript">
+     var app = null;
 
-			// Handle pops
-			var handlePop = function(evt) {
-				var path = evt.target.location.pathname;
-				if (path === app.basepath) { app.newDocument(true); }
-				else { app.loadDocument(path.substring(app.basepath.length, path.length)); }
-			};
+     // Handle pops
+     var handlePop = function(evt) {
+	 var path = evt.target.location.pathname;
+	 if (path === app.basepath) { app.newDocument(true); }
+	 else { app.loadDocument(path.substring(app.basepath.length, path.length)); }
+     };
 
-			// Set up the pop state to handle loads, skipping the first load
-			// to make chrome behave like others:
-			// http://code.google.com/p/chromium/issues/detail?id=63040
-			setTimeout(function() {
-				window.onpopstate = function(evt) {
-					try { handlePop(evt); } catch(err) { /* not loaded yet */ }
-				};
-			}, 1000);
-			// Construct app and load initial path
-		</script>
+     // Set up the pop state to handle loads, skipping the first load
+     // to make chrome behave like others:
+     // http://code.google.com/p/chromium/issues/detail?id=63040
+     setTimeout(function() {
+	 window.onpopstate = function(evt) {
+	     try { handlePop(evt); } catch(err) { /* not loaded yet */ }
+	 };
+     }, 1000);
+     // Construct app and load initial path
+    </script>
 
-	</head>
+  </head>
 
-	<body>
-		<ul id="messages"></ul>
+  <body class="jscoq-main">
 
-		<div id="key">
-		  <div id="pointer" style="display:none;"></div>
-			<div id="box1">
-				<a href="/about.md" class="logo"></a>
-			</div>
-			<div id="box2">
-				<div class="save function"></div>
-				<div class="new function"></div>
-				<div class="duplicate function"></div>
-				<div class="raw function"></div>
-				<div class="twitter function"></div>
-			</div>
-			<div id="box3" style="display:none;">
-				<div class="label"></div>
-				<div class="shortcut"></div>
-			</div>
-		</div>
+    <ul id="messages"></ul>
 
-                <div id="ide-wrapper">
-                  <div id="code-wrapper">
-                  </div>
-                </div> <!-- /#ide-wrapper -->
+    <div id="key">
+      <div id="pointer" style="display:none;"></div>
+      <div id="box1">
+	<a href="/about.md" class="logo"></a>
+      </div>
+      <div id="box2">
+	<div class="save function"></div>
+	<div class="new function"></div>
+	<div class="duplicate function"></div>
+	<div class="raw function"></div>
+	<div class="twitter function"></div>
+      </div>
+      <div id="box3" style="display:none;">
+	<div class="label"></div>
+	<div class="shortcut"></div>
+      </div>
+    </div>
 
-                <script src="/rhino-coq/ui-js/jscoq-loader.js" type="text/javascript"></script>
+    <div id="ide-wrapper">
+      <div id="code-wrapper">
+        <textarea id="collawrap">
+        </textarea>
+      </div>
+    </div> <!-- /#ide-wrapper -->
 
-                <script type="text/javascript">
-                 var coq;
-                 var coq_elem = document.getElementById('code-wrapper');
+    <script src="/rhino-coq/ui-js/jscoq-loader.js" type="text/javascript"></script>
 
-                 var jscoq_path = '/rhino-coq/';
+    <script type="text/javascript">
 
-                 loadJsCoq(jscoq_path)
-                            .then( () => new CoqManager ([coq_elem],
-                                                         { prelude: true,
-                                                           implicit_libs: true,
-                                                           base_path: jscoq_path,
-                                                           init_pkgs: ['init'] }))
-                            .then( cm => {
-                                coq = cm;
-                                /* Uh ah hack! */
-				app = new haste('Welcome to CollaCoq, the Coq pastebin', { twitter: true });
-                                app.basepath = '/collacoq/';
-                                app.$coq    = coq;
-                                app.$editor = coq.provider.snippets[0].editor;
-                                app.$editor.setValue('');
-                                app.$editor.focus();
-				handlePop({ target: window });
-                            });
-                </script>
+     var coq;
+     var coq_elem = document.getElementById('collawrap');
 
-	</body>
+     var jscoq_path = '/rhino-coq/';
+     var jscoq_opts =
+         { prelude: true
+          ,implicit_libs: true
+          ,editor: { mode: { 'company-coq': true }, keyMap: 'default' }
+          ,base_path: jscoq_path
+          ,init_pkgs: ['init']
+         };
+
+     loadJsCoq(jscoq_path)
+         .then( () => new CoqManager ([coq_elem], jscoq_opts) )
+         .then( cm => {
+             coq = cm;
+             /* Uh ah hack! */
+	     app = new haste('Welcome to CollaCoq, the Coq pastebin', { twitter: true });
+             app.basepath = '/collacoq/';
+             app.$coq    = coq;
+             app.$editor = coq.provider.snippets[0].editor;
+             app.$editor.setValue('');
+             app.$editor.focus();
+	     handlePop({ target: window });
+         });
+    </script>
+
+  </body>
 
 </html>
