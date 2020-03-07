@@ -65,7 +65,7 @@
     <script type="text/javascript">
 
      var coq;
-     var coq_elem = document.getElementById('code-wrapper');
+     var coq_elems = ['code-wrapper'];
 
      var jscoq_path = '/rhino-coq/';
      var jscoq_opts =
@@ -77,7 +77,7 @@
          };
 
      loadJsCoq(jscoq_path)
-         .then( () => new CoqManager ([coq_elem], jscoq_opts) )
+         .then( () => new CoqManager (coq_elems, jscoq_opts) )
          .then( cm => {
              coq = cm;
              /* Uh ah hack! */
