@@ -73,7 +73,7 @@ haste_document.prototype.save = function(data, callback) {
 
 var haste = function(appName, options) {
 
-  this.basepath = '/';
+  this.basepath = '/collacoq/';
   this.appName = appName;
   // A codeMirror instance.
 
